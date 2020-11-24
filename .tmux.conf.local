@@ -386,4 +386,4 @@ if-shell 'uname | grep -qi Cygwin' 'bind -T root C-v run "cat /dev/clipboard | t
 
 set -g mouse on
 
-set-option -g default-shell /bin/zsh
+set-option -g default-shell $SHELL
