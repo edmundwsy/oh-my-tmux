@@ -460,3 +460,9 @@ if-shell 'uname | grep -qi Cygwin' 'bind -T root C-v run "cat /dev/clipboard | t
 set -g mouse on
 
 set-option -g default-shell /usr/local/bin/fish
+
+bind -n C-p display-popup -E "/usr/local/bin/tmux new-session -A -s popup"
+
+# set -g @plugin 'tmux-plugins/tpm'
+# set -g @plugin 'tmux-plugins/tmux-sensible'
+# run '~/.tmux/plugins/tpm/tpm'
