@@ -461,7 +461,7 @@ set -g mouse on
 
 set-option -g default-shell /usr/local/bin/fish
 
-bind -n C-p display-popup -E "/usr/local/bin/tmux new-session -A -s popup"
+# bind -n C-p display-popup -E "/usr/local/bin/tmux new-session -A -s popup"
 
 # set -g @plugin 'tmux-plugins/tpm'
 # set -g @plugin 'tmux-plugins/tmux-sensible'
