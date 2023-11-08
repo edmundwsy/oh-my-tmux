@@ -112,7 +112,7 @@ tmux_conf_theme_window_bg="default"
 # highlight focused pane, possible values are:
 #   - true
 #   - false (default)
-tmux_conf_theme_highlight_focused_pane=false
+tmux_conf_theme_highlight_focused_pane=true
 
 # focused pane colours:
 tmux_conf_theme_focused_pane_bg="$tmux_conf_theme_colour_2"
@@ -123,7 +123,7 @@ tmux_conf_theme_focused_pane_bg="$tmux_conf_theme_colour_2"
 tmux_conf_theme_pane_border_style=thin
 
 # pane borders colours:
-tmux_conf_theme_pane_border="$tmux_conf_theme_colour_12"
+tmux_conf_theme_pane_border="$tmux_conf_theme_colour_2"
 tmux_conf_theme_pane_active_border="$tmux_conf_theme_colour_4"
 %if #{>=:#{version},3.2}
 tmux_conf_theme_pane_active_border="#{?pane_in_mode,$tmux_conf_theme_colour_9,#{?synchronize-panes,$tmux_conf_theme_colour_16,$tmux_conf_theme_colour_4}}"
@@ -202,9 +202,7 @@ tmux_conf_theme_window_status_current_format="#I #W#{?#{||:#{window_bell_flag},#
 # window activity status style
 tmux_conf_theme_window_status_activity_fg="default"
 tmux_conf_theme_window_status_activity_bg="default"
-tmux_conf_theme_window_status_activity_attr="underscore"
-
-# window bell status style
+tmux_conf_theme_window_status_activity_attr="underscore" # window bell status style
 tmux_conf_theme_window_status_bell_fg="$tmux_conf_theme_colour_5"
 tmux_conf_theme_window_status_bell_bg="default"
 tmux_conf_theme_window_status_bell_attr="blink,bold"
@@ -215,14 +213,14 @@ tmux_conf_theme_window_status_last_bg="$tmux_conf_theme_colour_2"
 tmux_conf_theme_window_status_last_attr="none"
 
 # status left/right sections separators
-#tmux_conf_theme_left_separator_main=""
-#tmux_conf_theme_left_separator_sub="|"
-#tmux_conf_theme_right_separator_main=""
-#tmux_conf_theme_right_separator_sub="|"
-tmux_conf_theme_left_separator_main="\uE0B0"  # /!\ you don't need to install Powerline
-tmux_conf_theme_left_separator_sub="\uE0B1"   #   you only need fonts patched with
-tmux_conf_theme_right_separator_main="\uE0B2" #   Powerline symbols or the standalone
-tmux_conf_theme_right_separator_sub="\uE0B3"  #   PowerlineSymbols.otf font, see README.md
+tmux_conf_theme_left_separator_main=""
+tmux_conf_theme_left_separator_sub="|"
+tmux_conf_theme_right_separator_main=""
+tmux_conf_theme_right_separator_sub="|"
+#tmux_conf_theme_left_separator_main='\uE0B0'  # /!\ you don't need to install Powerline
+#tmux_conf_theme_left_separator_sub='\uE0B1'   #   you only need fonts patched with
+#tmux_conf_theme_right_separator_main='\uE0B2' #   Powerline symbols or the standalone
+#tmux_conf_theme_right_separator_sub='\uE0B3'  #   PowerlineSymbols.otf font, see README.md
 
 # status left/right content:
 #   - separate main sections with "|"
@@ -251,8 +249,8 @@ tmux_conf_theme_right_separator_sub="\uE0B3"  #   PowerlineSymbols.otf font, see
 #     - #{uptime_s}
 #     - #{username}
 #     - #{username_ssh}
-tmux_conf_theme_status_left=" ❐ #S "
-tmux_conf_theme_status_right=" #{prefix}#{pairing}#{synchronized}#{?battery_status,#{battery_status},}#{?battery_bar, #{battery_bar},}#{?battery_percentage, #{battery_percentage},} , %R , %d %b | #{username}#{root} | #{hostname} "
+tmux_conf_theme_status_left=" ❐ #S | ↑#{?uptime_y, #{uptime_y}y,}#{?uptime_d, #{uptime_d}d,}#{?uptime_h, #{uptime_h}h,}#{?uptime_m, #{uptime_m}m,} "
+tmux_conf_theme_status_right=" #{prefix}#{mouse}#{pairing}#{synchronized}#{?battery_status,#{battery_status},}#{?battery_bar, #{battery_bar},}#{?battery_percentage, #{battery_percentage},} , %R , %d %b | #{username}#{root} | #{hostname} "
 
 # status left style
 tmux_conf_theme_status_left_fg="$tmux_conf_theme_colour_6,$tmux_conf_theme_colour_7,$tmux_conf_theme_colour_8"
@@ -352,12 +350,27 @@ tmux_conf_copy_to_os_clipboard=true
 # -- user customizations -------------------------------------------------------
 # this is the place to override or undo settings
 
+# increase history size
+#set -g history-limit 10000
+
+# start with mouse mode enabled
+set -g mouse on
+
+# force Vi mode
+#   really you should export VISUAL or EDITOR environment variable, see manual
+#set -g status-keys vi
+#set -g mode-keys vi
+
+# replace C-b by C-a instead of using both prefixes
+set -g prefix C-a
+set -g prefix2 C-b
+
 
 # if you don't want Oh my tmux! to alter a binding, use #!important
 # bind c new-window -c '#{pane_current_path}' #!important
 
 # move status line to top
-#set -g status-position top
+set -g status-position top
 
 
 # -- tpm -----------------------------------------------------------------------
@@ -372,18 +385,18 @@ tmux_conf_copy_to_os_clipboard=true
 # by default, launching tmux will update tpm and all plugins
 #   - true (default)
 #   - false
-tmux_conf_update_plugins_on_launch=true
+tmux_conf_update_plugins_on_launch=false
 
 # by default, reloading the configuration will update tpm and all plugins
 #   - true (default)
 #   - false
-tmux_conf_update_plugins_on_reload=true
+tmux_conf_update_plugins_on_reload=false
 
 # by default, reloading the configuration will uninstall tpm and plugins when no
 # plugins are enabled
 #   - true (default)
 #   - false
-tmux_conf_uninstall_plugins_on_reload=true
+tmux_conf_uninstall_plugins_on_reload=false
 
 # /!\ the tpm bindings differ slightly from upstream:
 #   - installing plugins: <prefix> + I
@@ -395,13 +408,14 @@ tmux_conf_uninstall_plugins_on_reload=true
 
 # to enable a plugin, use the 'set -g @plugin' syntax:
 # visit https://github.com/tmux-plugins for available plugins
-#set -g @plugin 'tmux-plugins/tmux-copycat'
-#set -g @plugin 'tmux-plugins/tmux-cpu'
-#set -g @plugin 'tmux-plugins/tmux-resurrect'
+# set -g @plugin 'tmux-plugins/tmux-copycat'
+set -g @plugin 'tmux-plugins/tmux-cpu'
+set -g @plugin 'tmux-plugins/tmux-resurrect'
+set -g @plugin 'tmux-plugins/tmux-sensible'
 #set -g @plugin 'tmux-plugins/tmux-continuum'
 #set -g @continuum-restore 'on'
 
-
+tmux_conf_theme_status_right='#{mavros} #{ip_address} #{ram_fg_color}RAM:#{ram_percentage} #{cpu_fg_color}CPU:#{cpu_percentage} #{prefix}#{mouse}#{pairing}#{synchronized} , %R | #{username}#{root} | #{hostname} '
 # -- custom variables ----------------------------------------------------------
 
 # to define a custom #{foo} variable, define a POSIX shell function between the
@@ -422,6 +436,25 @@ tmux_conf_uninstall_plugins_on_reload=true
 #   sleep 900                                         # sleep for 15 minutes, throttle network requests whatever the value of status-interval
 # }
 #
+# mavros() {
+#   # Listen to the mavros/battery topic and capture both stdout and stderr
+#   output=$(rostopic echo -n 1 /mavros/state 2>&1)
+#   
+#   # Check if there is an ERROR or WARNING in the output, indicating no connection
+#   if echo "$output" | grep -E "ERROR|WARNING" > /dev/null; then
+#       echo "📴DISCONNECTED"
+#   else
+#       battery=$(rostopic echo -n 1 /mavros/battery 2>&1 | awk  '/voltage:/ { printf "%.1f\n", $2; exit }')
+#       mode=$(rostopic echo -n 1 /mavros/state 2>&1 | awk  '/mode:/ { print $2; exit }')
+#       echo "📲$mode 🔋$battery \bV"
+#   fi
+# }
+# 
+# ip_address() {
+#   ip addr show wlan0 | grep -m 1 inet | awk '{print $2}' | cut -d / -f 1
+#   sleep 900
+# }
+#
 # online() {
 #   ping -c 1 1.1.1.1 >/dev/null 2>&1 && printf '✔' || printf '✘'
 # }
@@ -429,56 +462,6 @@ tmux_conf_uninstall_plugins_on_reload=true
 # "$@"
 # # /!\ do not remove the previous line
 
-set -g history-limit 10000
-
-#用-|切分panel, 直观
-unbind '"'
-bind - splitw -v
-unbind %
-bind '\' splitw -h
-
-#使用组合键直接选择panel'
-bind -n C-i select-pane -U
-bind -n C-k select-pane -D
-bind -n C-j select-pane -L
-bind -n C-l select-pane -R
-
-bind -n M-i select-pane -U
-bind -n M-k select-pane -D
-bind -n M-j select-pane -L
-bind -n M-l select-pane -R
-
-#改变panel 大小
-bind -r C-I resize-pane -U 2
-bind -r C-K resize-pane -D 2
-bind -r C-J resize-pane -L 2
-bind -r C-L resize-pane -R 2
-
-# 滚轮滚屏
-bind -T root WheelDownPane if-shell -F -t = "#{pane_in_mode}" "send-keys -M" "copy-mode; send-keys -M"
-bind -T root WheelUpPane if-shell -F -t = "#{pane_in_mode}" "send-keys -M" "copy-mode; send-keys -M"
-
+# bind -t vi-copy Enter copy-pipe "xclip -i -selection clipboard" # Automatically copy tmux selection to X clipboard
 set-window-option -g mode-keys vi
 
-#取消tab建切换panel, 恢复默认效果
-unbind -n tab
-
-# 提示信息显示时长  10*1000 ms
-set -g display-time 10000
-
-# 设定前缀为alt+b
-set -g prefix2 M-b
-bind M-b send-prefix -2
-
-# cygwin ctrl-v
-if-shell 'uname | grep -qi Cygwin' 'bind -T root C-v run "cat /dev/clipboard | tmux load-buffer - ; tmux paste-buffer"'
-
-set -g mouse on
-
-set-option -g default-shell /usr/local/bin/fish
-
-# bind -n C-p display-popup -E "/usr/local/bin/tmux new-session -A -s popup"
-
-# set -g @plugin 'tmux-plugins/tpm'
-# set -g @plugin 'tmux-plugins/tmux-sensible'
-# run '~/.tmux/plugins/tpm/tpm'
