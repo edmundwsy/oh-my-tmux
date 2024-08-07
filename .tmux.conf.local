@@ -362,8 +362,8 @@ set -g mouse on
 #set -g mode-keys vi
 
 # replace C-b by C-a instead of using both prefixes
-set -g prefix C-a
-set -g prefix2 C-b
+set -g prefix C-b
+set -g prefix2 C-a
 
 
 # if you don't want Oh my tmux! to alter a binding, use #!important
@@ -436,20 +436,6 @@ tmux_conf_theme_status_right='#{mavros} #{ip_address} #{ram_fg_color}RAM:#{ram_p
 #   sleep 900                                         # sleep for 15 minutes, throttle network requests whatever the value of status-interval
 # }
 #
-# mavros() {
-#   # Listen to the mavros/battery topic and capture both stdout and stderr
-#   output=$(rostopic echo -n 1 /mavros/state 2>&1)
-#   
-#   # Check if there is an ERROR or WARNING in the output, indicating no connection
-#   if echo "$output" | grep -E "ERROR|WARNING" > /dev/null; then
-#       echo "📴DISCONNECTED"
-#   else
-#       battery=$(rostopic echo -n 1 /mavros/battery 2>&1 | awk  '/voltage:/ { printf "%.1f\n", $2; exit }')
-#       mode=$(rostopic echo -n 1 /mavros/state 2>&1 | awk  '/mode:/ { print $2; exit }')
-#       echo "📲$mode 🔋$battery \bV"
-#   fi
-# }
-# 
 # ip_address() {
 #   ip addr show wlan0 | grep -m 1 inet | awk '{print $2}' | cut -d / -f 1
 #   sleep 900
